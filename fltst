@@ -1,0 +1,87 @@
+#! /usr/bin/env bash
+
+echo "FL-TEST"
+
+opt1(){
+	pdir=$PWD
+	read -p "Enter File name or folder name:  " fl
+	# check if the input is file
+	if [[ -f "$pdir/$fl" ]];then
+		fn=${fl%.*}
+		# if the directory associated with the file namme does not exist then set it up the proceed
+		if [[ ! -d "$pdir/${fn}_fltst" ]];then
+			mkdir "$pdir/${fn}_fltst"
+			dir_make=$?
+			if (( dir_make == 0)); then
+				echo "Initiating File Hashing"
+			else
+				echo "Error during folder creation (permission or fie system issue)"
+				echo "Resolve possible issue and try again"
+				exit 1
+			fi
+			mv "$pdir/$fl" "$pdir/${fn}_fltst/$fl"
+		fi
+		cd "$pdir/${fn}_fltst/"
+		sha256sum "$fl" >  tst.hash
+		sts=$?
+		if (( sts == 0 ));then
+			echo "HASHING SUCCESSFULL"
+		else
+			echo "HASHING FAILURE"
+		fi
+		cd ..
+		return
+	elif [[ -d "$pdir/$fl" ]];then
+		cd "$pdir/$fl"
+		find . -type f ! -name tst.hash -exec sha256sum {} + > tst.hash
+		sts=$?
+		if (( sts == 0 ));then
+			echo "HASHING SUCCESSFULL"
+		else
+			echo "HASHING FAILURE"
+		fi
+		cd ..
+		return
+	else
+		echo "INVALID INPUT....."
+		echo "Exiting with Error Try again"
+		exit 1
+	fi
+}
+
+opt2(){
+	read -p "Enter the name of the Folder to check for Integrity:  " fl
+	pdir=$PWD
+	if [[ -d "$pdir/$fl" ]];then
+		cd "$pdir/$fl"
+		if sha256sum -c tst.hash ; then
+			echo "All Files Intact"
+		else
+			echo "File Integrity Violation Detected!!!"
+		fi
+		cd ..
+		return
+	else
+		echo "INVALID INPUT....."
+		echo "Exciting with Error Try again"
+		exit 1
+	fi
+}
+while true;do
+	echo "_____________________________________________"
+	echo "CAUTION:  Always run Tool from the directory having the hash folder or hash file"
+	printf "Choose an option:\n\t1. Setup hash of new file OR Update hash of existing file\n\t2. Check Integrity of Existing file\n\t3. Exit\n\t\t\n"
+	read ch
+	echo "Your choice: $ch"
+	case $ch in
+	1) opt1 ;;
+
+	2) opt2 ;;
+
+ 	3)	echo "Exiting Program....."
+		exit 0
+		;;
+
+	*) echo "invalid Input... Try Again...."
+	esac
+done

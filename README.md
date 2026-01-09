@@ -16,26 +16,30 @@ This allows you to detect any accidental or malicious changes.
 
 ---
 
-## Installation (Step-by-Step)
+## Installation
 
 Follow these steps to install `fltst` on your system:
 
-1. **Clone the repository from GitHub**
+**Clone the repository from GitHub**
 
 Open a terminal and run:
 
 ```bash
 git clone https://github.com/alfredjoseph0405-commits/File_Integrity_Testing_FLTST.git
+cd File_Integrity_Testing_FLTST
+sudo ./install.sh
 ```
 
-## Uninstallation (Step-by-Step)
+## Uninstallation
 
 Follow these steps to uninstall `fltst` on your system:
 
-1. **Delete the code from system using**
+**Delete the code from system using**
 
 Open a terminal and run:
 
 ```bash
 sudo rm /usr/local/bin/fltst
 ```
+
+

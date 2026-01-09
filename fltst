@@ -2,6 +2,31 @@
 
 echo "FL-TEST"
 
+if [[ "$1" == "--help" || "$1" == "-h" ]];then
+	echo "Use \"fltst\" command to initiate menu driven Code"
+	echo "Run Command from the directory containing the file to be hashed"
+echo ""
+echo ""
+echo ""
+	echo "--OPTION 1--"
+	printf "\t To Hash File: Provide FILE_NAME when prompted\n"
+	printf "\t\t[*] A folder {FILE_NAME}_fltst will be created in the Present Directory called {FILE_NAME[without last extension]}_fltst\n"
+	printf "\t To Hash Folder:\n\t\tProvide FOLDER_NAME when prompted\n"
+	printf "\t\t[*] The hash log will be created within the provide folder\n"
+echo ""
+	echo "--OPTION 2--"
+	printf "\t To Test File Integrity: Provide FOLDER_NAME as provided in --OPTION 1-- when prompted\n"
+	printf "\t\t[*] To access already hashed file use {FILE_NAME}_fltst\n"
+	printf "\t\t[*] To access already hashed folder use {FOLDER_NAME}\n"
+echo ""
+	echo "--OPTION 3--"
+	printf "\tExit Script"
+exit 1
+elif [[ -n "$1" ]];then 
+	echo "Invalid Argument!!"
+	echo "Did you mean --help or -h ??"
+exit 1
+fi
 opt1(){
 	pdir=$PWD
 	read -p "Enter File name or folder name:  " fl
